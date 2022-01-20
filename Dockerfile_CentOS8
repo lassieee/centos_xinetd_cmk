@@ -20,15 +20,15 @@ RUN echo -e \
         protocol       = tcp\n\
         wait           = no\n\
         user           = root\n\
-        server         = /usr/local/bin/check_mk_agent\n\
+        server         = /usr/bin/check_mk_agent\n\
         #only_from      = 1.1.1.1\n\
+        log_on_success = \n\
         disable        = no\n\
+        per_source     = 3\n\
 }" \
 > /etc/xinetd.d/check-mk-agent
 
 RUN useradd ansible && \
-    #echo 'ansible' | passwd ansible --stdin && \
-    #echo 'root' | passwd root --stdin && \
     usermod -aG wheel ansible && \
     sed -i -e 's/^%wheel/#%wheel/' -e 's/^# %wheel/%wheel/' /etc/sudoers && \
     chmod 777 docker-entrypoint.sh
